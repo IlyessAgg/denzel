@@ -61,7 +61,7 @@ app.get("/movies/search", (request, response) => {
 	var limit = 5, metascore = 0;
 	if(request.query.limit != undefined) limit = request.query.limit;
 	if(request.query.metascore != undefined) metascore = request.query.metascore;
-	collection.aggregate([{$match:{"metascore": {$gte:Number(metascore)}}}, {$limit:Number(limit)}]).toArray((error, result) => {
+	collection.aggregate([{$match:{"metascore": {$gte:Number(metascore)}}}, {$limit:Number(limit)}, {$sort:{"metascore":-1}}]).toArray((error, result) => {
         if(error) {
             return response.status(500).send(error);
         }
