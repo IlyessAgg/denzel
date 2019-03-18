@@ -15,17 +15,6 @@ app.use(BodyParser.urlencoded({ extended: true }));
 
 var database, collection;
 
-app.listen(9292, () => {
-    MongoClient.connect(uri, { useNewUrlParser: true }, (error, client) => {
-        if(error) {
-            throw error;
-        }
-        database = client.db(DATABASE_NAME);
-        collection = database.collection("denzel");
-        console.log("Connected to `" + DATABASE_NAME + "`!");
-    });
-});
-
 app.post("/movies/populate", async (request, response) => {
 	var movies = await imdb(DENZEL_IMDB_ID);
 	collection.insertMany(movies, (error, result) => {
@@ -78,4 +67,15 @@ app.post("/movies/:id", (request, response) => {
         response.send(result.result);
     });
     console.log("Update done.");
+});
+
+app.listen(9292, () => {
+    MongoClient.connect(uri, { useNewUrlParser: true }, (error, client) => {
+        if(error) {
+            throw error;
+        }
+        database = client.db(DATABASE_NAME);
+        collection = database.collection("denzel");
+        console.log("Connected to `" + DATABASE_NAME + "`!");
+    });
 });
