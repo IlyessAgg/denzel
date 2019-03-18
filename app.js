@@ -15,7 +15,7 @@ app.use(BodyParser.urlencoded({ extended: true }));
 
 var database, collection;
 
-app.post("/movies/populate", async (request, response) => {
+app.get("/movies/populate", async (request, response) => {
 	var movies = await imdb(DENZEL_IMDB_ID);
 	collection.insertMany(movies, (error, result) => {
         if(error) {
