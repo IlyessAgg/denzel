@@ -47,16 +47,6 @@ app.get("/movies", (request, response) => {
     console.log("Query done.");
 });
 
-app.get("/movies/id/:id", (request, response) => {
-	collection.findOne({ "id": request.params.id}, (error, result) => {
-        if(error) {
-            return response.status(500).send(error);
-        }
-        response.send(result);
-    });
-    console.log("Query done.");
-});
-
 app.get("/movies/search", (request, response) => {
 	var limit = 5, metascore = 0;
 	if(request.query.limit != undefined) limit = request.query.limit;
@@ -70,7 +60,17 @@ app.get("/movies/search", (request, response) => {
     console.log("Search done.");
 });
 
-app.post("/movies/id/:id", (request, response) => {
+app.get("/movies/:id", (request, response) => {
+	collection.findOne({ "id": request.params.id}, (error, result) => {
+        if(error) {
+            return response.status(500).send(error);
+        }
+        response.send(result);
+    });
+    console.log("Query done.");
+});
+
+app.post("/movies/:id", (request, response) => {
 	collection.updateOne({"id": request.params.id}, {$set: {"date":request.query.date, "review":request.query.review}}, (error, result) => {
         if(error) {
             return response.status(500).send(error);
